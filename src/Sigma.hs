@@ -1,4 +1,4 @@
-module Zeta
+module Sigma
     (colorFun
     , myImage
     , colorMap
@@ -9,12 +9,12 @@ import Data.Complex ( Complex(..) )
 import Graphics.Image
     ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
 import ColorMap (colorMap)
-import Math.Weierstrass (weierstrassZeta)
+import Math.Weierstrass (weierstrassSigma)
 
 width :: Int 
-width = 768
+width = 512
 height :: Int 
-height = 768
+height = 512
 
 width' :: Double
 width' = fromIntegral width
@@ -29,7 +29,7 @@ colorFun (i, j) =
     in 
     let z = i' :+ j' 
     in
-    let wz =  weierstrassZeta z (0 :+ 0.5) (1 :+ 0.5)
+    let wz =  weierstrassSigma z (3 :+ 5) (4 :+ 2)
     in
     let (rr, gg, bb) = colorMap wz
     in
@@ -42,4 +42,4 @@ funColor :: Image VU RGB Double
 funColor = myImage colorFun (width, height)
 
 saveImage :: IO ()
-saveImage = writeImage "images/myzeta2.png" funColor
+saveImage = writeImage "images/mysigma.png" funColor
