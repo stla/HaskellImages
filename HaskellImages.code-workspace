@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"haskell.serverEnvironment": {
+			"PATH": "C:\\ghcup\\bin"
+		},
+		"haskell.toolchain": {
+			"ghc": "9.6.2",
+			"hls": null,
+			"cabal": "3.6.2.0",
+			"stack": "2.9.3"
+		}
+	}
+}
