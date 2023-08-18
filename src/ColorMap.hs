@@ -1,7 +1,7 @@
 module ColorMap
     (colorMap)
     where
-import Data.Complex ( Complex(..), realPart, imagPart, magnitude )
+import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
 
 -- :{
 -- fracRem :: (RealFrac a, Integral b) => a -> b -> a
@@ -22,7 +22,7 @@ colorMap z =
     in
     let y = imagPart z
     in
-    let a = atan2 y x 
+    let a = phase z
     in 
     let r = modulo (magnitude z) 1
     in
