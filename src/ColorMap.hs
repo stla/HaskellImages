@@ -1,5 +1,5 @@
 module ColorMap
-    (colorMap)
+    (colorMap, colorMap2)
     where
 import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
 
@@ -35,3 +35,23 @@ colorMap z =
         (1.0 - cos(g-0.5))*8.0, 
         (1.0 - cos(b-0.5))*8.0
     )
+
+
+colorMap2 :: Complex Double -> (Double, Double, Double)
+colorMap2 z =
+    let a = phase z
+    in 
+    let arg = if a < 0 
+        then a + pi 
+        else a
+    in
+    let h = min (arg/2/pi) 0.9999999
+    in 
+    let w = 2 * pi * log(1 + abs arg)
+    in 
+    let s = sqrt((1.0 + sin w ) / 2.0)
+    in 
+    let l = (1.0 + cos w ) / 2.0
+    in 
+    (h, s, l)
+
