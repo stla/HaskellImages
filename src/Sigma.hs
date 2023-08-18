@@ -26,9 +26,9 @@ g2g3 = ellipticInvariants (0.5 :+ 0) (0 :+ 0.5)
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = fromIntegral i / width' - 1
+    let i' = fromIntegral i / width' - 0.5
     in
-    let j' = fromIntegral j / height' - 1
+    let j' = fromIntegral j / height' - 0.5
     in 
     let z = i' :+ j' 
     in
@@ -42,7 +42,7 @@ myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
 myImage thefun (m, n) = makeImageR VU (m, n) thefun
 
 funColor :: Image VU RGB Double
-funColor = myImage colorFun (1024, 1024)
+funColor = myImage colorFun (512, 512)
 
-saveImage :: IO ()
-saveImage = writeImage "images/mysigma.png" funColor
+saveImage :: FilePath -> IO ()
+saveImage file = writeImage ("images/" ++ file) funColor

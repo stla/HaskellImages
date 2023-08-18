@@ -9,7 +9,7 @@ import Data.Complex ( Complex(..) )
 import Graphics.Image
     ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
 import ColorMap (colorMap)
-import Math.Weierstrass (weierstrassZeta)
+import Math.Weierstrass (weierstrassZeta, ellipticInvariants)
 
 width :: Int 
 width = 768
@@ -21,6 +21,9 @@ width' = fromIntegral width
 height' :: Double
 height' = fromIntegral height
 
+g2g3 :: (Complex Double, Complex Double)
+g2g3 = ellipticInvariants (0.5 :+ 0) (0 :+ 0.5)
+
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
     let i' = fromIntegral i / width' - 0.5
@@ -29,7 +32,7 @@ colorFun (i, j) =
     in 
     let z = i' :+ j' 
     in
-    let wz =  weierstrassZeta z (0 :+ 0.5) (1 :+ 0.5)
+    let wz =  weierstrassZeta z (fst g2g3) (snd g2g3)
     in
     let (rr, gg, bb) = colorMap wz
     in
@@ -41,5 +44,5 @@ myImage thefun (m, n) = makeImageR VU (m, n) thefun
 funColor :: Image VU RGB Double
 funColor = myImage colorFun (width, height)
 
-saveImage :: IO ()
-saveImage = writeImage "images/myzeta2.png" funColor
+saveImage :: FilePath -> IO ()
+saveImage file = writeImage ("images/" ++ file) funColor
