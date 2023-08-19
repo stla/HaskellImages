@@ -29,9 +29,9 @@ g2g3 = ellipticInvariants (0.5 :+ 0) (0 :+ 0.5)
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = fromIntegral i / width' - 0.5
+    let i' = 3 * fromIntegral i / width' - 1.5
     in
-    let j' = fromIntegral j / height' - 0.5
+    let j' = 3 * fromIntegral j / height' - 1.5
     in 
     let z = i' :+ j' 
     in
