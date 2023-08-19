@@ -43,13 +43,13 @@ funColor = myImage colorFun (width, height)
 saveImage :: FilePath -> IO ()
 saveImage file = writeImage ("images/" ++ file) funColor
 
-funrgb :: RealFrac a => a -> a -> Pixel RGB Double
+funrgb :: Double -> Double -> Pixel RGB Double
 funrgb i j = 
-      let z = (frac i / 512) :+ (frac i / 512)
-          modulus = magnitude z
-          valid = (modulus < 1) && (realPart z >= 0) 
+      let ij = (i / 512) :+ (j / 512)
+          modulus = magnitude ij
+          valid = (modulus < 1) && (realPart ij >= 0) 
           (r, g, b) = 
              if valid 
-            then colorMap (eisensteinE6 z)
+            then colorMap (eisensteinE6 ij)
             else (0, 0, 0)
     in PixelRGB r g b
