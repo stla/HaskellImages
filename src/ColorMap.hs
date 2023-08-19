@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns          #-}
+
 module ColorMap
     (colorMap, colorMap2, colorMap3, getRGB)
     where

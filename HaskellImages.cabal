@@ -20,6 +20,7 @@ library
                      , Gradient
                      , Zeta
                      , Sigma
+                     , Exception
   build-depends:       base >= 4.7 && < 5
                      , hip
                      , weierstrass-functions
