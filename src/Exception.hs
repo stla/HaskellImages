@@ -3,13 +3,13 @@ module Exception()
 
 import Control.Exception ( Exception )
 
-data MyException = ThisException | ThatException | FailureAddRGB
-    deriving Show
+-- data MyException = ThisException | ThatException | FailureAddRGB
+--     deriving Show
 
-instance Exception MyException
+-- instance Exception MyException
 
 
---instance FailureAddRGB MyException
+-- --instance FailureAddRGB MyException
 
-try :: Exception e => IO a -> IO (Either e a)
+-- try :: Exception e => IO a -> IO (Either e a)
 

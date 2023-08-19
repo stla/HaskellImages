@@ -21,6 +21,7 @@ library
                      , Zeta
                      , Sigma
                      , Exception
+                     , Eisenstein
   build-depends:       base >= 4.7 && < 5
                      , hip
                      , weierstrass-functions
