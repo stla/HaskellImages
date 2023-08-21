@@ -7,9 +7,9 @@ module Eisenstein
     ) where
 import Data.Complex ( Complex(..), magnitude, realPart, imagPart)
 import Graphics.Image
-    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), Pixel(PixelHSI), VU(..), toPixelRGB, ToRGB (toPixelRGB) )
-import ColorMap (colorMap, colorMap2)
-import Math.Eisenstein (eisensteinE6)
+    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..))
+import ColorMap (colorMap)
+import Math.Eisenstein (eisensteinE4)
 
 
 width :: Int 
@@ -19,23 +19,24 @@ height = 512
 subdivisions :: Double
 subdivisions = 1024
 
-width' :: Double
-width' = fromIntegral width
-height' :: Double
-height' = fromIntegral height
+-- width' :: Double
+-- width' = fromIntegral width
+-- height' :: Double
+-- height' = fromIntegral height
 
 modulusOK :: Complex Double -> Bool
 modulusOK tau = 
-    magnitude q < 0.85 && (realPart q > 0)
-    where q = exp((0 :+ 1) * tau * pi)
+    --if(Mod(q) >= 0.99 || (Im(q) == 0 && Re(q) <= 0)) return(bkgcol)
+    magnitude q < 0.8 && (imagPart q > 0 || realPart q < 0.8) --(and [(imagPart q == 0), (realPart q > 0), (realPart q < 0.85)])
+    where q = exp((0 :+ 1) * tau * pi * 8)
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = width' * fromIntegral i * 2 / subdivisions
-        j' = height' * fromIntegral j * 2 / subdivisions
+    let i' = fromIntegral i * 2 / subdivisions
+        j' = fromIntegral j * 2 / subdivisions
         z = i' :+ j' 
         (r, g, b) = if modulusOK z 
-            then (colorMap) (eisensteinE6 z)
+            then colorMap (eisensteinE4 z)
             else (0, 0, 0)
     in
     PixelRGB r g b
@@ -56,6 +57,6 @@ saveImage file = writeImage ("images/" ++ file) funColor
 --         valid = modulusOK ij
 --         (r, g, b) = 
 --             if valid 
---               then colorMap (eisensteinE6 ij)
+--               then colorMap (eisensteinE4 ij)
 --               else (0, 0, 0)
 --     in PixelRGB r g b
