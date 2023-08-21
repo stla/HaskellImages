@@ -13,16 +13,16 @@ import Math.Eisenstein (eisensteinE4)
 
 
 width :: Int 
-width = 512
+width = 1024
 height :: Int 
-height = 512
-subdivisions :: Double
-subdivisions = 1024
+height = 1024
+-- subdivisions :: Double
+-- subdivisions = 1024
 
--- width' :: Double
--- width' = fromIntegral width
--- height' :: Double
--- height' = fromIntegral height
+width' :: Double
+width' = fromIntegral width
+height' :: Double
+height' = fromIntegral height
 
 modulusOK :: Complex Double -> Bool
 modulusOK tau = 
@@ -32,8 +32,8 @@ modulusOK tau =
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = fromIntegral i * 2 / subdivisions
-        j' = fromIntegral j * 2 / subdivisions
+    let i' = fromIntegral i / width'
+        j' = fromIntegral j / height'
         z = i' :+ j' 
         (r, g, b) = if modulusOK z 
             then colorMap (eisensteinE4 z)
