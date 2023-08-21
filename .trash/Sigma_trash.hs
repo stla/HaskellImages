@@ -11,29 +11,22 @@ import Graphics.Image
 import ColorMap (colorMap)
 import Math.Weierstrass (weierstrassSigma, ellipticInvariants)
 
-xlimitLwr :: Int
-xlimitLwr = -200
-xlimitUpr :: Int
-xlimitUpr = 200
+xlimitLwr :: Double
+xlimitLwr = 1.0
+xlimitUpr :: Double
+xlimitUpr = 1.0
 
-ylimitLwr :: Int
-ylimitLwr = -200
-ylimitUpr :: Int
-ylimitUpr = 200
-
-xlimitLwr' :: Double
-xlimitLwr' = fromIntegral xlimitLwr
-xlimitUpr' :: Double
-xlimitUpr' = fromIntegral xlimitUpr
-ylimitLwr' :: Double
-ylimitLwr' = fromIntegral ylimitLwr
-ylimitUpr' :: Double
-ylimitUpr' = fromIntegral ylimitUpr
+ylimitLwr :: Double
+ylimitLwr = 1.0
+ylimitUpr :: Double
+ylimitUpr = 1.0
 
 width :: Int 
 width = 512
 height :: Int 
 height = 512
+subdivisions :: Double
+subdivisions = 1024
 
 width' :: Double
 width' = fromIntegral width
@@ -45,20 +38,23 @@ g2g3 = ellipticInvariants (0.5 :+ 0) (0 :+ 0.5)
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
-        j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
-        z = i' :+ j' 
-        wz = weierstrassSigma z (fst g2g3) (snd g2g3)
-        (r, g, b) = colorMap wz
+    let i' = width' * fromIntegral i * (xlimitUpr - xlimitLwr) / subdivisions
     in
-    PixelRGB r g b
+    let j' = height' * fromIntegral j * (ylimitUpr - ylimitLwr) / subdivisions
+    in 
+    let z = i' :+ j' 
+    in
+    let wz = weierstrassSigma z (fst g2g3) (snd g2g3)
+    in
+    let (rr, gg, bb) = colorMap wz
+    in
+    PixelRGB rr gg bb
 
 myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
 myImage thefun (w, h) = makeImageR VU (w, h) thefun
 
 funColor :: Image VU RGB Double
-funColor = myImage colorFun (height, width)
---  (height + (ylimitUpr - ylimitLwr), width + (xlimitUpr - xlimitLwr))
+funColor = myImage colorFun (width, height)
 
 saveImage :: FilePath -> IO ()
 saveImage file = writeImage ("images/" ++ file) funColor

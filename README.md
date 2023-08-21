@@ -6,5 +6,5 @@
 
 ![](images/EisensteinE4_inverse.png)
 
-![](images/mysigma4.png)
+![](images/Sigma03.png)
 
