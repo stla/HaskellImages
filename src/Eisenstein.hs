@@ -24,13 +24,19 @@ width' = fromIntegral width
 height' :: Double
 height' = fromIntegral height
 
+modulusOK :: Complex Double -> Bool
+modulusOK tau = 
+    magnitude q < 0.85 && (realPart q > 0)
+    where q = exp((0 :+ 1) * tau * pi)
 
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
-    let i' = width' * fromIntegral i * 2 * subdivisions
-        j' = height' * fromIntegral j * 2 * subdivisions
+    let i' = width' * fromIntegral i * 2 / subdivisions
+        j' = height' * fromIntegral j * 2 / subdivisions
         z = i' :+ j' 
-        (r, g, b) = (colorMap) (eisensteinE6 z) 
+        (r, g, b) = if modulusOK z 
+            then (colorMap) (eisensteinE6 z)
+            else (0, 0, 0)
     in
     PixelRGB r g b
 
@@ -43,13 +49,13 @@ funColor = myImage colorFun (width, height)
 saveImage :: FilePath -> IO ()
 saveImage file = writeImage ("images/" ++ file) funColor
 
-funrgb :: Double -> Double -> Pixel RGB Double
-funrgb i j = 
-      let ij = (i / 512) :+ (j / 512)
-          modulus = magnitude ij
-          valid = (modulus < 1) && (realPart ij >= 0) 
-          (r, g, b) = 
-             if valid 
-            then colorMap (eisensteinE6 ij)
-            else (0, 0, 0)
-    in PixelRGB r g b
+
+-- funrgb :: Double -> Double -> Pixel RGB Double
+-- funrgb i j = 
+--     let ij = (i / 512) :+ (j / 512)
+--         valid = modulusOK ij
+--         (r, g, b) = 
+--             if valid 
+--               then colorMap (eisensteinE6 ij)
+--               else (0, 0, 0)
+--     in PixelRGB r g b
