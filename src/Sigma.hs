@@ -4,11 +4,12 @@ module Sigma
     , colorMap
     , funColor
     , saveImage
+    , saveImage2
     ) where
 import Data.Complex ( Complex(..) )
 import Graphics.Image
-    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
-import ColorMap (colorMap)
+    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..), Pixel(PixelHSI), toPixelRGB )
+import ColorMap (colorMap, colorMap2)
 import Math.Weierstrass (weierstrassSigma, ellipticInvariants)
 
 xlimitLwr :: Int
@@ -53,6 +54,16 @@ colorFun (i, j) =
     in
     PixelRGB r g b
 
+colorFun2 :: (Int, Int) -> Pixel RGB Double
+colorFun2 (i, j) =
+    let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
+        j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
+        z = i' :+ j' 
+        wz = weierstrassSigma z (fst g2g3) (snd g2g3)
+        (h, s, intensity) = colorMap2 wz
+    in
+    toPixelRGB (PixelHSI h s intensity)
+
 myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
 myImage thefun (w, h) = makeImageR VU (w, h) thefun
 
@@ -60,5 +71,11 @@ funColor :: Image VU RGB Double
 funColor = myImage colorFun (height, width)
 --  (height + (ylimitUpr - ylimitLwr), width + (xlimitUpr - xlimitLwr))
 
+funColor2 :: Image VU RGB Double
+funColor2 = myImage colorFun2 (height, width)
+
 saveImage :: FilePath -> IO ()
 saveImage file = writeImage ("images/" ++ file) funColor
+
+saveImage2 :: FilePath -> IO ()
+saveImage2 file = writeImage ("images/" ++ file) funColor2
