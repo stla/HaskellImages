@@ -46,6 +46,13 @@ packages:
       size: 176
   original:
     hackage: converge-0.1.0.1
+- completed:
+    hackage: numeric-tools-0.2.0.1@sha256:dbf0191b3495570694b32a3c6f336da427008c550ea8753b5ca485af8bcf2985,1894
+    pantry-tree:
+      sha256: e4f96ece284c5954a73bb8ea9c22b9efb39e7da5fdd68e415b20d9f1d43dc43c
+      size: 851
+  original:
+    hackage: numeric-tools-0.2.0.1
 snapshots:
 - completed:
     sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2
