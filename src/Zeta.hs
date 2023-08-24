@@ -45,7 +45,7 @@ height' = fromIntegral height
 
 
 g2g3 :: (Complex Double, Complex Double)
-g2g3 = ellipticInvariants (0.1 :+ 0) (0 :+ 0.1)
+g2g3 = ellipticInvariants (0.5 :+ 0) (0.2 :+ 0.1)
 
 g2, g3 :: Complex Double
 g2 = fst g2g3
@@ -102,4 +102,4 @@ saveImage2 :: FilePath -> IO ()
 saveImage2 file = writeImage ("images/" ++ file) funColor2
 
 saveImage3 :: FilePath -> IO ()
-saveImage3 file = writeImage ("images/" ++ file) (funColor3 80 4)
+saveImage3 file = writeImage ("images/" ++ file) (funColor3 0.8 40)
