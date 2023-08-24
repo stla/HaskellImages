@@ -123,8 +123,11 @@ colorMap2 z =
 
 perFract :: Double -> Double -> Double -> Double -> Double
 perFract x t a b = 
-    a + (b -a) * ((x / t) - fromIntegral (floor(x / t)))
-
+    a + (b - a) * (xot - fromInt (floor xot))
+    where 
+        xot = x / t
+        fromInt :: Int -> Double
+        fromInt = fromIntegral
 
 colorMap3' :: Complex Double -> Double -> Double -> RGB Double
 colorMap3' z s r = 

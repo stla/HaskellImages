@@ -5,28 +5,18 @@ module Klein
     ) where
 import Data.Complex ( Complex(..), magnitude )
 import Graphics.Image
-    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..), toPixelRGB, ToRGB (toPixelRGB) )
+    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
 import ColorMap (colorMap, colorMap3)
 import Math.Eisenstein (kleinJ)
 
-xlimitLwr :: Int
-xlimitLwr = -1
-xlimitUpr :: Int
-xlimitUpr = 1
-
-ylimitLwr :: Int
-ylimitLwr = -1
-ylimitUpr :: Int
-ylimitUpr = 1
-
 xlimitLwr' :: Double
-xlimitLwr' = fromIntegral xlimitLwr
+xlimitLwr' = -1
 xlimitUpr' :: Double
-xlimitUpr' = fromIntegral xlimitUpr
+xlimitUpr' = 1
 ylimitLwr' :: Double
-ylimitLwr' = fromIntegral ylimitLwr
+ylimitLwr' = -1
 ylimitUpr' :: Double
-ylimitUpr' = fromIntegral ylimitUpr
+ylimitUpr' = 1
 
 width :: Int 
 width = 512
@@ -39,7 +29,7 @@ height' :: Double
 height' = fromIntegral height
 
 psi :: Complex Double -> Complex Double
-psi z = im + 2*im / (im/z - 1)
+psi z = im + 2*im*z / (im - z)
   where
     im = 0 :+ 1
 
@@ -48,11 +38,11 @@ colorFun (i, j) =
     let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
-        (r, g ,b) = if magnitude z > 0.96 
+        (r, g ,b) = if magnitude z > 0.95
             then (0, 0, 0)
-            else if j < 0  
-                then colorMap (-1 / psi (kleinJ z))
-                else colorMap (psi (kleinJ z))
+            else if j' < 0 
+                then colorMap (1 / kleinJ (-1 / psi z)) 
+                else colorMap (1 / kleinJ (psi z)) 
     in
     PixelRGB r g b
 
@@ -61,11 +51,11 @@ colorFun3 s r (i, j) =
     let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
-        (red, green ,blue) = if magnitude z > 0.96 
+        (red, green ,blue) = if magnitude z > 0.95
             then (0, 0, 0)
-            else if j < 0  
-                then colorMap3 (-1 / psi (kleinJ z)) s r
-                else colorMap3 (psi (kleinJ z)) s r
+            else if j' <= 0  
+                then colorMap3 (kleinJ (-1 / psi z)) s r
+                else colorMap3 (kleinJ (psi z)) s r
     in
     PixelRGB red green blue
 
@@ -73,7 +63,7 @@ myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
 myImage thefun (m, n) = makeImageR VU (m, n) thefun
 
 funColor :: Image VU RGB Double
-funColor = myImage colorFun (width, height)
+funColor = myImage colorFun (height, width)
 
 funColor3 :: Double -> Double -> Image VU RGB Double
 funColor3 s r = myImage (colorFun3 s r) (height, width)

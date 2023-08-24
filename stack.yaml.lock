@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: weierstrass-functions-0.1.1.0@sha256:c829355ed68038237cfdf6b56a9d6af906eb22f64246f358a3e6a1560e3e0056,1863
+    hackage: weierstrass-functions-0.1.2.0@sha256:d5d82b375fa6e358f71f23021aa3a20bce750b62654a563239e5c96b89972d0b,1914
     pantry-tree:
-      sha256: 5824cbf30a2d8d1e7f0d10a0a1c73a93dc3766102b982aafa8a4b8f633b459bb
+      sha256: 8217bcfeb8c8f94a25244d61d794a150ece6ff31a26be0f531221f5507b61a4c
       size: 556
   original:
-    hackage: weierstrass-functions-0.1.1.0
+    hackage: weierstrass-functions-0.1.2.0
 - completed:
     hackage: elliptic-integrals-0.1.0.1@sha256:596f67b9e7be8882308a398c7a6a6e6cf3d196839db4a1e21667392f09f714f1,1484
     pantry-tree:
