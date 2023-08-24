@@ -1,10 +1,11 @@
 module ColorMap
-    (colorMap, colorMap2, colorMap3)
+    (colorMap, colorMap2, colorMap3, colorMap4)
     where
 import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
 import Graphics.Image.Interface ()
 import Data.Colour.RGBSpace (RGB ( .. ))
 import Data.Colour.RGBSpace.HSL ( hsl )
+import Data.Colour.RGBSpace.HSV ( hsv )
 import GHC.Float (log1p)
 
 -- :{ -- this is the same as the modulo function below
@@ -144,6 +145,29 @@ colorMap3' z s r =
 colorMap3 :: Complex Double -> Double -> Double -> (Double, Double, Double)
 colorMap3 z s r = 
     let rgb = colorMap3' z s r
+        red = channelRed rgb
+        green = channelGreen rgb
+        blue = channelBlue rgb
+    in (red, green, blue)
+
+colorMap4' :: Complex Double -> RGB Double
+colorMap4' z = 
+    let a = phase z 
+        h = 57.29577951308232087680 * if a < 0 then a + pi else a
+        mz = magnitude z
+        s = 1 - b mz * b mz
+        v = 1 - (1 - b mz)**2
+    in
+    hsv h s v 
+    where
+        b r 
+            | r == 0 = 0
+            | isInfinite r = 1
+            | otherwise = atan(log r) / pi + 0.5
+
+colorMap4 :: Complex Double -> (Double, Double, Double)
+colorMap4 z  = 
+    let rgb = colorMap4' z
         red = channelRed rgb
         green = channelGreen rgb
         blue = channelBlue rgb

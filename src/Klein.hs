@@ -2,11 +2,12 @@ module Klein
     (colorFun
     , saveImage
     , saveImage3
+    , saveImage4
     ) where
 import Data.Complex ( Complex(..), magnitude )
 import Graphics.Image
     ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
-import ColorMap (colorMap, colorMap3)
+import ColorMap (colorMap, colorMap3, colorMap4)
 import Math.Eisenstein (kleinJ)
 
 xlimitLwr' :: Double
@@ -59,6 +60,19 @@ colorFun3 s r (i, j) =
     in
     PixelRGB red green blue
 
+colorFun4 :: (Int, Int) -> Pixel RGB Double
+colorFun4 (i, j) = 
+    let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
+        j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
+        z = i' :+ j' 
+        (r, g ,b) = if magnitude z > 0.95
+            then (0, 0, 0)
+            else if j' < 0 
+                then colorMap4 (kleinJ (-1 / psi z)) 
+                else colorMap4 (kleinJ (psi z)) 
+    in
+    PixelRGB r g b
+
 myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
 myImage thefun (m, n) = makeImageR VU (m, n) thefun
 
@@ -68,8 +82,14 @@ funColor = myImage colorFun (height, width)
 funColor3 :: Double -> Double -> Image VU RGB Double
 funColor3 s r = myImage (colorFun3 s r) (height, width)
 
+funColor4 :: Image VU RGB Double
+funColor4 = myImage colorFun4 (height, width)
+
 saveImage :: FilePath -> IO ()
 saveImage file = writeImage ("images/" ++ file) funColor
 
 saveImage3 :: FilePath -> IO ()
 saveImage3 file = writeImage ("images/" ++ file) (funColor3 0.9 3)
+
+saveImage4 :: FilePath -> IO ()
+saveImage4 file = writeImage ("images/" ++ file) funColor4
