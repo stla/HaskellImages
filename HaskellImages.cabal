@@ -29,6 +29,7 @@ library
                      , numeric-tools
                      , vector
                      , extra
+                     , colour
   default-language:    Haskell2010
   ghc-options:         -Wall
                        -Wcompat
