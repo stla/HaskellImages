@@ -8,5 +8,5 @@
 
 ![](images/Sigma03.png)
 
-![](images/Zeta_cm3.png)
+![](images/Zeta-cm3_2.png)
 

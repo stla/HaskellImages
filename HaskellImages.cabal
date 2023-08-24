@@ -23,6 +23,7 @@ library
                      , Exception
                      , Eisenstein
                      , Palette
+                     , Klein
   build-depends:       base >= 4.7 && < 5
                      , hip
                      , weierstrass-functions
