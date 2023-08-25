@@ -1,6 +1,5 @@
-module Klein
-    (colorFun
-    , saveImage
+module KleinFibonacci
+    (saveImage
     , saveImage3
     , saveImage4
     ) where
@@ -34,16 +33,19 @@ psi z = im + 2*im*z / (im - z)
   where
     im = 0 :+ 1
 
+fibo :: Complex Double -> Complex Double
+fibo z = z / (1 - z - z*z)
+
 colorFun :: (Int, Int) -> Pixel RGB Double
 colorFun (i, j) = 
     let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
         (r, g ,b) = if magnitude z > 0.95
-            then (0, 0, 0)
+            then (0.1, 0.1, 0.1)
             else if j' < 0 
-                then colorMap (1728 / kleinJ (-1 / psi z)) 
-                else colorMap (1728 / kleinJ (psi z)) 
+                then colorMap (fibo(kleinJ (-1 / psi z) / 1728)) 
+                else colorMap (fibo(kleinJ (psi z) / 1728))
     in
     PixelRGB r g b
 
@@ -53,10 +55,10 @@ colorFun3 s r (i, j) =
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
         (red, green ,blue) = if magnitude z > 0.95
-            then (0, 0, 0)
+            then (0.1, 0.1, 0.1)
             else if j' <= 0  
-                then colorMap3 (kleinJ (-1 / psi z) / 1728) s r
-                else colorMap3 (kleinJ (psi z) / 1728) s r
+                then colorMap3 (fibo(kleinJ (-1 / psi z) / 1728)) s r 
+                else colorMap3 (fibo(kleinJ (psi z) / 1728)) s r 
     in
     PixelRGB red green blue
 
@@ -68,8 +70,8 @@ colorFun4 (i, j) =
         (r, g ,b) = if magnitude z > 0.95
             then (0.1, 0.1, 0.1)
             else if j' < 0 
-                then colorMap4 (kleinJ (-1 / psi z) / 1728) 
-                else colorMap4 (kleinJ (psi z) / 1728) 
+                then colorMap4 (fibo(kleinJ (-1 / psi z) / 1728)) 
+                else colorMap4 (fibo(kleinJ (psi z) / 1728)) 
     in
     PixelRGB r g b
 

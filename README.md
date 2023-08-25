@@ -15,3 +15,9 @@
 ![](Klein_cm1.png)
 
 ![](Klein_cm4.png)
+
+![](KleinFibonacci_cm3_v0.png)
+
+![](KleinFibonacci_cm1.png)
+
+![](KleinFibonacci_cm4.png)
