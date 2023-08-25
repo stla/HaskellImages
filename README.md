@@ -10,14 +10,14 @@
 
 ![](images/Zeta-cm3_2.png)
 
-![](Klein_cm3.png)
+![](images/Klein_cm3.png)
 
-![](Klein_cm1.png)
+![](images/Klein_cm1.png)
 
-![](Klein_cm4.png)
+![](images/Klein_cm4.png)
 
-![](KleinFibonacci_cm3_v0.png)
+![](images/KleinFibonacci_cm3_v0.png)
 
-![](KleinFibonacci_cm1.png)
+![](images/KleinFibonacci_cm1.png)
 
-![](KleinFibonacci_cm4.png)
+![](images/KleinFibonacci_cm4.png)
