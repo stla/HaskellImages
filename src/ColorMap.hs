@@ -153,7 +153,7 @@ colorMap3 z s r =
 colorMap4' :: Complex Double -> RGB Double
 colorMap4' z = 
     let a = phase z 
-        h = 57.29577951308232087680 * if a < 0 then a + pi else a
+        h = 57.29577951308232087680 * if a < 0 then a + 2*pi else a
         mz = magnitude z
         s = 1 - b mz * b mz
         v = 1 - (1 - b mz)**2

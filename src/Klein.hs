@@ -20,9 +20,9 @@ ylimitUpr' :: Double
 ylimitUpr' = 1
 
 width :: Int 
-width = 512
+width = 1024
 height :: Int 
-height = 512
+height = 1024
 
 width' :: Double
 width' = fromIntegral width
@@ -66,10 +66,10 @@ colorFun4 (i, j) =
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
         (r, g ,b) = if magnitude z > 0.95
-            then (0, 0, 0)
+            then (0.1, 0.1, 0.1)
             else if j' < 0 
-                then colorMap4 (kleinJ (-1 / psi z)) 
-                else colorMap4 (kleinJ (psi z)) 
+                then colorMap4 (kleinJ (-1 / psi z) / 1728) 
+                else colorMap4 (kleinJ (psi z) / 1728) 
     in
     PixelRGB r g b
 
