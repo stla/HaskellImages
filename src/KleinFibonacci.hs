@@ -67,8 +67,8 @@ colorFun4 (i, j) =
     let i' = xlimitLwr' + fromIntegral i / width' * (xlimitUpr' - xlimitLwr')
         j' = ylimitLwr' + fromIntegral j / height' * (ylimitUpr' - ylimitLwr')
         z = i' :+ j' 
-        (r, g ,b) = if magnitude z > 0.95
-            then (0.1, 0.1, 0.1)
+        (r, g ,b) = if magnitude z > 0.96
+            then (1, 1, 1)
             else if j' < 0 
                 then colorMap4 (fibo(kleinJ (-1 / psi z) / 1728)) 
                 else colorMap4 (fibo(kleinJ (psi z) / 1728)) 

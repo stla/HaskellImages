@@ -17,6 +17,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     ColorMap
+                     , ColorFun
                      , Gradient
                      , Zeta
                      , Sigma
