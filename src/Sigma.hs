@@ -1,8 +1,8 @@
 module Sigma
-    (save1, save2, save3) 
+    (save1, save2, save3, save4) 
     where
 import Data.Complex ( Complex(..) )
-import ColorFun (saveImage, saveImage2, saveImage3)
+import ColorFun (saveImage, saveImage2, saveImage3, saveImage4)
 import Math.Weierstrass (weierstrassSigma, ellipticInvariants)
 
 xlimitLwr, xlimitUpr :: Double
@@ -35,3 +35,6 @@ save2 = saveImage2 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr,
 
 save3 :: Double -> Double -> IO ()
 save3 s n = saveImage3 complexMap s n (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm3.png"
+
+save4 :: IO ()
+save4 = saveImage4 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm4.png"
