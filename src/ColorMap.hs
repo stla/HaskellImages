@@ -1,12 +1,12 @@
 module ColorMap
-    (colorMap, colorMap2, colorMap3, colorMap4)
+    ( colorMap, colorMap2, colorMap3, colorMap4 )
     where
 import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
 import Graphics.Image.Interface ()
 import Data.Colour.RGBSpace (RGB ( .. ))
 import Data.Colour.RGBSpace.HSL ( hsl )
 import Data.Colour.RGBSpace.HSV ( hsv )
-import GHC.Float (log1p)
+import GHC.Float ( log1p )
 
 -- :{ -- this is the same as the modulo function below
 -- fracRem :: (RealFrac a, Integral b) => a -> b -> a
@@ -27,10 +27,8 @@ colorMap z =
         y = imagPart z
         a = phase z
         r = modulo (magnitude z) 1
-    in
-    let g = abs(modulo (2*a) 1)
-    in
-    let b = abs(modulo (x*y) 1)
+        g = abs(modulo (2*a) 1)
+        b = abs(modulo (x*y) 1)
     in
     (
         (1.0 - cos(r - 0.5)) * 8.0, 
@@ -42,18 +40,13 @@ colorMap z =
 colorMap2 :: Complex Double -> (Double, Double, Double)
 colorMap2 z =
     let a = phase z
-    in 
-    let arg = if a < 0 
+        arg = if a < 0 
         then a + pi 
         else a
-    in
-    let h = min (arg/2/pi) 0.9999999
-    in 
-    let w = 2 * pi * log(1 + abs arg)
-    in 
-    let s = sqrt((1.0 + sin w ) / 2.0)
-    in 
-    let i = (1.0 + cos w ) / 2.0
+        h = min (arg/2/pi) 0.9999999
+        w = 2 * pi * log1p(abs arg)
+        s = sqrt((1.0 + sin w ) / 2.0)
+        i = (1.0 + cos w ) / 2.0
     in 
     (h, s, i)
 
@@ -150,13 +143,14 @@ colorMap3 z s r =
         blue = channelBlue rgb
     in (red, green, blue)
 
+
 colorMap4' :: Complex Double -> RGB Double
 colorMap4' z = 
     let a = phase z 
         h = 57.29577951308232087680 * if a < 0 then a + 2*pi else a
-        mz = magnitude z
-        s = 1 - b mz * b mz
-        v = 1 - (1 - b mz)**2
+        bmz = b (magnitude z)
+        s = 1 - bmz * bmz
+        v = 1 - (1 - bmz)**2
     in
     hsv h s v 
     where
