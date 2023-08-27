@@ -49,7 +49,7 @@ save2 = do
     eithervcplx <- besselColumns
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
-    saveImage2' arr (512, 512) "Bessel_cm1.png"
+    saveImage2' arr (512, 512) "Bessel_cm2.png"
 
 save3 :: IO ()
 save3 = do
