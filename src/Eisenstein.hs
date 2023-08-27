@@ -1,62 +1,41 @@
 module Eisenstein
-    (myImage
-    , funColor
-    , colorFun
-    , colorMap
-    , saveImage
-    ) where
+    (save1, save2, save3, save4)
+    where
+import ColorFun (saveImage, saveImage2, saveImage3, saveImage4)
 import Data.Complex ( Complex(..), magnitude, realPart, imagPart)
-import Graphics.Image
-    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..))
-import ColorMap (colorMap)
 import Math.Eisenstein (eisensteinE4)
 
 
-width :: Int 
-width = 1024
-height :: Int 
-height = 1024
--- subdivisions :: Double
--- subdivisions = 1024
+xlimitLwr, xlimitUpr :: Double
+xlimitLwr = 0
+xlimitUpr = 1
 
-width' :: Double
-width' = fromIntegral width
-height' :: Double
-height' = fromIntegral height
+ylimitLwr, ylimitUpr :: Double
+ylimitLwr = 0
+ylimitUpr = 1
+
+width, height :: Int
+width = 512
+height = 512
 
 modulusOK :: Complex Double -> Bool
 modulusOK tau = 
-    --if(Mod(q) >= 0.99 || (Im(q) == 0 && Re(q) <= 0)) return(bkgcol)
-    magnitude q < 0.8 && (imagPart q > 0 || realPart q < 0.8) --(and [(imagPart q == 0), (realPart q > 0), (realPart q < 0.85)])
+    magnitude q < 0.8 && (imagPart q > 0 || realPart q < 0.8) 
     where q = exp((0 :+ 1) * tau * pi * 8)
 
-colorFun :: (Int, Int) -> Pixel RGB Double
-colorFun (i, j) = 
-    let i' = fromIntegral i / width'
-        j' = fromIntegral j / height'
-        z = i' :+ j' 
-        (r, g, b) = if modulusOK z 
-            then colorMap (eisensteinE4 z)
-            else (0, 0, 0)
-    in
-    PixelRGB r g b
+e4map :: Complex Double -> Maybe (Complex Double)
+e4map z = if modulusOK z 
+            then Just (eisensteinE4 z)
+            else Nothing
 
-myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int) -> Image VU RGB Double
-myImage thefun (m, n) = makeImageR VU (m, n) thefun
+save1 :: IO ()
+save1 = saveImage e4map (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Eisen4_cm1.png"
 
-funColor :: Image VU RGB Double
-funColor = myImage colorFun (width, height)
+save2 :: IO ()
+save2 = saveImage2 e4map (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Eisen4_cm2.png"
 
-saveImage :: FilePath -> IO ()
-saveImage file = writeImage ("images/" ++ file) funColor
+save3 :: Double -> Double -> IO ()
+save3 s n = saveImage3 e4map s n (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Eisen4_cm3.png"
 
-
--- funrgb :: Double -> Double -> Pixel RGB Double
--- funrgb i j = 
---     let ij = (i / 512) :+ (j / 512)
---         valid = modulusOK ij
---         (r, g, b) = 
---             if valid 
---               then colorMap (eisensteinE4 ij)
---               else (0, 0, 0)
---     in PixelRGB r g b
+save4 :: IO ()
+save4 = saveImage4 e4map (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Eisen4_cm4.png"
