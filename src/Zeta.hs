@@ -26,8 +26,8 @@ g2, g3 :: Complex Double
 g2 = fst g2g3
 g3 = snd g2g3
 
-complexMap :: Complex Double -> Complex Double
-complexMap z = weierstrassZeta z g2 g3
+complexMap :: Complex Double -> Maybe (Complex Double)
+complexMap z = Just $ weierstrassZeta z g2 g3
 
 save1 :: IO ()
 save1 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Zeta_cm1.png"

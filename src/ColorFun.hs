@@ -9,7 +9,7 @@ import Graphics.Image
     ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..), Pixel(PixelHSI), toPixelRGB )
 import ColorMap (colorMap, colorMap2, colorMap3, colorMap4)
 
-type Func = Complex Double -> Complex Double
+type Func = Complex Double -> Maybe (Complex Double)
 
 increments :: (Int, Int) -> (Double, Double) -> (Double, Double) 
            -> ((Int, Int) -> (Double, Double))

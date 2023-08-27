@@ -7,6 +7,7 @@ import Data.Colour.RGBSpace (RGB ( .. ))
 import Data.Colour.RGBSpace.HSL ( hsl )
 import Data.Colour.RGBSpace.HSV ( hsv )
 import GHC.Float ( log1p )
+import Data.Maybe ( isNothing, fromJust )
 
 -- :{ -- this is the same as the modulo function below
 -- fracRem :: (RealFrac a, Integral b) => a -> b -> a
@@ -21,34 +22,43 @@ modulo a p =
         then a - fromIntegral(p * floor(a/p'))  
         else a - fromIntegral(p * ceiling(a/p'))
 
-colorMap :: Complex Double -> (Double, Double, Double)
-colorMap z = 
-    let x = realPart z
-        y = imagPart z
-        a = phase z
-        r = modulo (magnitude z) 1
-        g = abs(modulo (2*a) 1)
-        b = abs(modulo (x*y) 1)
-    in
-    (
-        (1.0 - cos(r - 0.5)) * 8.0, 
-        (1.0 - cos(g - 0.5)) * 8.0, 
-        (1.0 - cos(b - 0.5)) * 8.0
-    )
+colorMap :: Maybe (Complex Double) -> (Double, Double, Double)
+colorMap z0 = 
+    if isNothing z0 
+        then (0.1, 0.1, 0.1)
+        else 
+        let x = realPart z
+            y = imagPart z
+            a = phase z
+            r = modulo (magnitude z) 1
+            g = abs(modulo (2*a) 1)
+            b = abs(modulo (x*y) 1)
+        in
+        (
+            (1.0 - cos(r - 0.5)) * 8.0, 
+            (1.0 - cos(g - 0.5)) * 8.0, 
+            (1.0 - cos(b - 0.5)) * 8.0
+        )
+        where
+            z = fromJust z0
 
 
-colorMap2 :: Complex Double -> (Double, Double, Double)
-colorMap2 z =
-    let a = phase z
-        arg = if a < 0 
-        then a + pi 
-        else a
-        h = min (arg/2/pi) 0.9999999
-        w = 2 * pi * log1p(abs arg)
-        s = sqrt((1.0 + sin w ) / 2.0)
-        i = (1.0 + cos w ) / 2.0
-    in 
-    (h, s, i)
+colorMap2 :: Maybe (Complex Double) -> (Double, Double, Double)
+colorMap2 z0 =
+    if isNothing z0 
+        then (0, 0, 0)
+        else
+        let z = fromJust z0
+            a = phase z
+            arg = if a < 0 
+            then a + pi 
+            else a
+            h = min (arg/2/pi) 0.9999999
+            w = 2 * pi * log1p(abs arg)
+            s = sqrt(( 1.0 + sin w ) / 2.0)
+            i = ( 1.0 + cos w ) / 2.0
+        in 
+        (h, s, i)
 
 -- colorMap3 :: Complex c -> (Double, Double, Double)
 -- colorMap3 z =
@@ -123,46 +133,55 @@ perFract x t a b =
         fromInt :: Int -> Double
         fromInt = fromIntegral
 
-colorMap3' :: Complex Double -> Double -> Double -> RGB Double
-colorMap3' z s r = 
-    let arg = phase z * 57.29577951308232087680 -- (180 / pi) --
-        h = if arg < 0
-            then arg + 360
-            else arg
-        ph = perFract h (360/r) 216 360 / 360
-        plogm = perFract (log1p (magnitude z)) (2 * pi / r) 0.6 1.0
-        l = ph * plogm
-    in
-    hsl h s l
+colorMap3' :: Maybe (Complex Double) -> Double -> Double -> RGB Double
+colorMap3' z0 s r =
+    if isNothing z0
+        then RGB 1 1 1
+        else 
+        let arg = phase z * 57.29577951308232087680 -- (180 / pi) --
+            h = if arg < 0
+                then arg + 360
+                else arg
+            ph = perFract h (360/r) 216 360 / 360
+            plogm = perFract (log1p (magnitude z)) (2 * pi / r) 0.6 1.0
+            l = ph * plogm
+        in
+        hsl h s l
+        where
+            z = fromJust z0
 
-colorMap3 :: Complex Double -> Double -> Double -> (Double, Double, Double)
-colorMap3 z s r = 
-    let rgb = colorMap3' z s r
-        red = channelRed rgb
-        green = channelGreen rgb
-        blue = channelBlue rgb
-    in (red, green, blue)
+colorMap3 :: Maybe (Complex Double) -> Double -> Double -> (Double, Double, Double)
+colorMap3 z s r =
+        let rgb = colorMap3' z s r
+            red   = channelRed rgb
+            green = channelGreen rgb
+            blue  = channelBlue rgb
+        in (red, green, blue)
 
 
-colorMap4' :: Complex Double -> RGB Double
-colorMap4' z = 
-    let a = phase z 
-        h = 57.29577951308232087680 * if a < 0 then a + 2*pi else a
-        bmz = b (magnitude z)
-        s = 1 - bmz * bmz
-        v = 1 - (1 - bmz)**2
-    in
-    hsv h s v 
-    where
-        b r 
-            | r == 0 = 0
-            | isInfinite r = 1
-            | otherwise = atan(log r) / pi + 0.5
+colorMap4' :: Maybe (Complex Double) -> RGB Double
+colorMap4' z0 = 
+    if isNothing z0 
+        then RGB 1 1 1
+        else 
+        let a = phase z 
+            h = 57.29577951308232087680 * if a < 0 then a + 2*pi else a
+            bmz = b (magnitude z)
+            s = 1 - bmz * bmz
+            v = 1 - (1 - bmz)**2
+        in
+        hsv h s v 
+        where
+            z = fromJust z0
+            b r 
+                | r == 0 = 0
+                | isInfinite r = 1
+                | otherwise = atan(log r) / pi + 0.5
 
-colorMap4 :: Complex Double -> (Double, Double, Double)
-colorMap4 z  = 
+colorMap4 :: Maybe (Complex Double) -> (Double, Double, Double)
+colorMap4 z =
     let rgb = colorMap4' z
-        red = channelRed rgb
+        red   = channelRed rgb
         green = channelGreen rgb
-        blue = channelBlue rgb
+        blue  = channelBlue rgb
     in (red, green, blue)
