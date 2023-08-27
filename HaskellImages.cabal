@@ -25,6 +25,7 @@ library
                      , Palette
                      , Klein
                      , KleinFibonacci
+                     , BesselCSV
   build-depends:       base >= 4.7 && < 5
                      , hip
                      , weierstrass-functions >= 0.1.3.0
@@ -32,6 +33,9 @@ library
                      , vector
                      , extra
                      , colour
+                     , array
+                     , cassava
+                     , bytestring
   default-language:    Haskell2010
   ghc-options:         -Wall
                        -Wcompat

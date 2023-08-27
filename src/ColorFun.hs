@@ -3,11 +3,13 @@ module ColorFun
     , saveImage2
     , saveImage3
     , saveImage4
+    , saveImage'
     ) where
 import Data.Complex ( Complex(..) )
 import Graphics.Image
     ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..), Pixel(PixelHSI), toPixelRGB )
 import ColorMap (colorMap, colorMap2, colorMap3, colorMap4)
+import qualified Data.Array as A (Array, (!))
 
 type Func = Complex Double -> Maybe (Complex Double)
 
@@ -22,6 +24,15 @@ increments (w, h) (xlwr, xupr) (ylwr, yupr) = func
         ( xlwr + fromIntegral i / width' * (xupr - xlwr)
         , ylwr + fromIntegral j / height' * (yupr - ylwr)
         )
+
+colorFunArray :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
+              -> (Double, Double) -> (Double, Double) 
+              -> (Int, Int) -> Pixel RGB Double
+colorFunArray arr (w, h) (xlwr, xupr) (ylwr, yupr) (i, j) = 
+    let z = arr A.! (i, j)
+        (r, g, b) = colorMap (Just z)
+    in
+    PixelRGB r g b
 
 
 colorFun :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
@@ -69,6 +80,12 @@ myImage :: ((Int, Int) -> Pixel RGB Double) -> (Int, Int)
 myImage thefun (w, h) = makeImageR VU (w, h) thefun
 
 
+funArrayColor :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
+         -> (Double, Double) -> (Double, Double) -> Image VU RGB Double
+funArrayColor arr (w, h) (xlwr, xupr) (ylwr, yupr) = 
+    myImage (colorFunArray arr (w, h) (xlwr, xupr) (ylwr, yupr)) (h, w) 
+
+
 funColor :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
          -> Image VU RGB Double
 funColor func (w, h) (xlwr, xupr) (ylwr, yupr) = 
@@ -98,6 +115,13 @@ saveImage :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double)
 saveImage func (w, h) (xlwr, xupr) (ylwr, yupr) file = 
     writeImage ("images/" ++ file) 
                (funColor func (w, h) (xlwr, xupr) (ylwr, yupr))
+
+
+saveImage' :: A.Array (Int, Int) (Complex Double)  -> (Int, Int) 
+           -> (Double, Double) -> (Double, Double) -> FilePath -> IO ()
+saveImage' arr (w, h) (xlwr, xupr) (ylwr, yupr) file = 
+    writeImage ("images/" ++ file) 
+               (funArrayColor arr (w, h) (xlwr, xupr) (ylwr, yupr))
 
 
 saveImage2 :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
