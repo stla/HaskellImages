@@ -21,7 +21,6 @@ library
                      , Gradient
                      , Zeta
                      , Sigma
-                     , Exception
                      , Eisenstein
                      , Palette
                      , Klein
