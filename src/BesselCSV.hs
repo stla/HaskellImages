@@ -1,8 +1,6 @@
-{-# LANGUAGE BangPatterns      #-}
-{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 module BesselCSV
-    ( save1 )
+    ( save1, save2, save3, save4 )
     where
 import qualified Data.Vector as V ( Vector, (!), length )
 import qualified Data.ByteString.Lazy as BL
@@ -11,7 +9,7 @@ import Data.Complex ( Complex((:+)) )
 import Data.Csv ( (.!), FromRecord(..), decode, HasHeader(..), ToRecord(..), toField, record )
 import qualified Data.Array as A ( Array, array )
 import Data.Either.Extra ( fromRight' )
-import ColorFun (saveImage')
+import ColorFun (saveImage', saveImage2', saveImage3', saveImage4')
 
 data Cplx = Cplx { re :: !Double, im :: !Double }
 
@@ -45,3 +43,24 @@ save1 = do
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
     saveImage' arr (512, 512) "Bessel_cm1.png"
+
+save2 :: IO ()
+save2 = do
+    eithervcplx <- besselColumns
+    let vcplx = fromRight' eithervcplx
+        arr = besselArray vcplx
+    saveImage2' arr (512, 512) "Bessel_cm1.png"
+
+save3 :: IO ()
+save3 = do
+    eithervcplx <- besselColumns
+    let vcplx = fromRight' eithervcplx
+        arr = besselArray vcplx
+    saveImage3' arr 0.8 20 (512, 512) "Bessel_cm3.png"
+
+save4 :: IO ()
+save4 = do
+    eithervcplx <- besselColumns
+    let vcplx = fromRight' eithervcplx
+        arr = besselArray vcplx
+    saveImage4' arr (512, 512) "Bessel_cm4.png"
