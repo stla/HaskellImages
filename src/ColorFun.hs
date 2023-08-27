@@ -25,10 +25,9 @@ increments (w, h) (xlwr, xupr) (ylwr, yupr) = func
         , ylwr + fromIntegral j / height' * (yupr - ylwr)
         )
 
-colorFunArray :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
-              -> (Double, Double) -> (Double, Double) 
-              -> (Int, Int) -> Pixel RGB Double
-colorFunArray arr (w, h) (xlwr, xupr) (ylwr, yupr) (i, j) = 
+colorFunArray :: A.Array (Int, Int) (Complex Double) 
+                    -> (Int, Int) -> Pixel RGB Double
+colorFunArray arr (i, j) = 
     let z = arr A.! (i, j)
         (r, g, b) = colorMap (Just z)
     in
@@ -81,9 +80,9 @@ myImage thefun (w, h) = makeImageR VU (w, h) thefun
 
 
 funArrayColor :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
-         -> (Double, Double) -> (Double, Double) -> Image VU RGB Double
-funArrayColor arr (w, h) (xlwr, xupr) (ylwr, yupr) = 
-    myImage (colorFunArray arr (w, h) (xlwr, xupr) (ylwr, yupr)) (h, w) 
+                 -> Image VU RGB Double
+funArrayColor arr (w, h) = 
+    myImage (colorFunArray arr) (h, w) 
 
 
 funColor :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
@@ -117,11 +116,11 @@ saveImage func (w, h) (xlwr, xupr) (ylwr, yupr) file =
                (funColor func (w, h) (xlwr, xupr) (ylwr, yupr))
 
 
-saveImage' :: A.Array (Int, Int) (Complex Double)  -> (Int, Int) 
-           -> (Double, Double) -> (Double, Double) -> FilePath -> IO ()
-saveImage' arr (w, h) (xlwr, xupr) (ylwr, yupr) file = 
+saveImage' :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
+                -> FilePath -> IO ()
+saveImage' arr (w, h) file = 
     writeImage ("images/" ++ file) 
-               (funArrayColor arr (w, h) (xlwr, xupr) (ylwr, yupr))
+               (funArrayColor arr (w, h))
 
 
 saveImage2 :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 

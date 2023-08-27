@@ -17,7 +17,9 @@ import Control.Monad ( mzero )
 import Data.Complex ( Complex((:+)) )
 import Data.Csv ( (.!), FromRecord(..), decode, HasHeader(..), ToRecord(..), toField, record )
 import qualified Data.Array as A (Array, array)
-import Data.Either (fromRight)
+import Data.Either ( Either )
+import Data.Either.Extra ( fromRight' )
+import ColorFun (saveImage')
 
 data Cplx = Cplx { re :: !Double, im :: !Double }
 
@@ -45,3 +47,9 @@ besselArray vcplx =
     in
     A.array ((0, 0), (511, 511)) assocList
 
+save1 :: IO ()
+save1 = do
+    eithervcplx <- besselColumns
+    let vcplx = fromRight' eithervcplx
+        arr = besselArray vcplx
+    saveImage' arr (512, 512) "Bessel_cm1.png"
