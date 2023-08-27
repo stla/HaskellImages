@@ -1,23 +1,15 @@
 {-# LANGUAGE BangPatterns      #-}
-{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 module BesselCSV
-  where
-import qualified Data.Vector as V (Vector, (!), length)
--- from base
-import GHC.Generics
-import System.IO
-import System.Exit (exitFailure)
--- from bytestring
-import Data.ByteString (ByteString, hGetSome, empty)
+    ( save1 )
+    where
+import qualified Data.Vector as V ( Vector, (!), length )
 import qualified Data.ByteString.Lazy as BL
 import Control.Monad ( mzero )
--- from cassava
 import Data.Complex ( Complex((:+)) )
 import Data.Csv ( (.!), FromRecord(..), decode, HasHeader(..), ToRecord(..), toField, record )
-import qualified Data.Array as A (Array, array)
-import Data.Either ( Either )
+import qualified Data.Array as A ( Array, array )
 import Data.Either.Extra ( fromRight' )
 import ColorFun (saveImage')
 
@@ -31,8 +23,8 @@ instance FromRecord Cplx where
         | V.length v == 2 = Cplx <$> (v .! 0) <*> (v .! 1)
         | otherwise     = mzero
 instance ToRecord Cplx where
-    toRecord (Cplx re' im') = record [
-        toField re', toField im']
+    toRecord (Cplx re' im') = 
+        record [toField re', toField im']
 
 besselColumns :: IO (Either String (V.Vector Cplx))
 besselColumns = do
@@ -43,7 +35,7 @@ besselArray :: V.Vector Cplx -> A.Array (Int, Int) (Complex Double)
 besselArray vcplx = 
     let assocList :: [((Int, Int), Complex Double)]
         assocList = 
-         [((i, j), cplxToComplex (vcplx V.! (i*511 + j))) | i <- [0 .. 511], j <- [0 .. 511]]
+         [((i, j), cplxToComplex (vcplx V.! (i + j*512))) | i <- [0 .. 511], j <- [0 .. 511]]
     in
     A.array ((0, 0), (511, 511)) assocList
 
