@@ -1,8 +1,8 @@
 module ColorMaps
-    ( colorMap1, colorMap2, colorMap3 )
+    ( colorMap1, colorMap2, colorMap3, colorMap4 )
     where
 import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
-import Graphics.Image.Interface ()
+-- import Graphics.Image.Interface ()
 import Graphics.Image
     ( RGB, Pixel(PixelRGB), Pixel(PixelHSI), toPixelRGB )
 import Data.Colour.RGBSpace ( channelRed, channelGreen, channelBlue )
@@ -23,10 +23,12 @@ colorMap1 z0 =
         in
             PixelRGB r g b
         where
+            fromInt :: Int -> Double
+            fromInt = fromIntegral
             f x = (1.0 - cos(fractpart x - 0.5)) * 8.0
             fractpart x = if x > 0 
-                then x - fromIntegral (floor x)
-                else x - fromIntegral (ceiling x) 
+                then x - fromInt (floor x)
+                else x - fromInt (ceiling x) 
 
 
 colorMap2 :: Maybe (Complex Double) -> Pixel RGB Double
@@ -46,7 +48,7 @@ colorMap2 z0 =
 
 
 colorMap3 :: Double -> Double -> Maybe (Complex Double) -> Pixel RGB Double
-colorMap3 s r z0 =
+colorMap3 s n z0 =
     if isNothing z0
         then PixelRGB 1 1 1
         else 
@@ -55,8 +57,8 @@ colorMap3 s r z0 =
             h = if arg < 0
                 then arg + 360
                 else arg
-            ph = perFract h (360/r) 216 360 / 360
-            plogm = perFract (log1p (magnitude z)) (2 * pi / r) 0.6 1.0
+            ph = perFract h (360/n) 216 360 / 360
+            plogm = perFract (log1p (magnitude z)) (2 * pi / n) 0.6 1.0
             l = ph * plogm
             color = hsl h s l
             r = channelRed color
@@ -72,3 +74,26 @@ colorMap3 s r z0 =
                 let xot = x / t
                 in 
                 a + (b - a) * (xot - fromInt (floor xot))
+
+colorMap4 :: Maybe (Complex Double) -> Pixel RGB Double
+colorMap4 z0 =
+    if isNothing z0 
+        then PixelRGB 1 1 1
+        else
+        let z = fromJust z0
+            a = phase z
+            h = 180 / pi * if a < 0 then a + 2*pi else a
+            fmz = f (magnitude z)
+            s = 1 - fmz * fmz
+            v = 1 - (1 - fmz)**2
+            color = hsv h s v
+            r = channelRed color
+            g = channelGreen color
+            b = channelBlue color
+        in 
+            PixelRGB r g b
+        where
+            f r 
+                | r == 0 = 0
+                | isInfinite r = 1
+                | otherwise = atan(log r) / pi + 0.5

@@ -1,12 +1,13 @@
 module SaveImage
     ( saveImage
-    , saveImage')
+    , saveImage'
+    , myImage
+    , Func )
    where
 import Data.Complex ( Complex(..) )
 import Graphics.Image
-    ( makeImageR, writeImage, RGB, Image, Pixel(PixelRGB), VU(..) )
-import ColorMap (colorMap, colorMap2, colorMap3, colorMap4)
-import qualified Data.Array as A (Array, (!))
+    ( makeImageR, writeImage, RGB, Image, Pixel, VU(..) )
+import qualified Data.Array as A (Array, (!), bounds)
 
 type Func = Complex Double -> Maybe (Complex Double)
 type ColorMap = Maybe (Complex Double) -> Pixel RGB Double
@@ -35,20 +36,29 @@ coloringFromFunc func (w, h) (xlwr, xupr) (ylwr, yupr) cmap (i, j) = cmap (func 
         (i', j') = increments (w, h) (xlwr, xupr) (ylwr, yupr) (i, j)
         z = i' :+ j' 
 
+myImage :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
+          -> ColorMap -> Image VU RGB Double
+myImage func (w, h) (xlwr, xupr) (ylwr, yupr) cmap = makeImageR VU (w, h) coloring
+    where
+        coloring = coloringFromFunc func (w, h) (xlwr, xupr) (ylwr, yupr) cmap
 
-myImage :: Coloring -> (Int, Int) -> Image VU RGB Double
-myImage coloring (w, h) = makeImageR VU (w, h) coloring
+myImage' :: A.Array (Int, Int) (Complex Double) -> ColorMap -> Image VU RGB Double
+myImage' arr cmap = makeImageR VU (w, h) coloring
+    where
+        coloring = coloringFromArray arr cmap
+        (lwr, upr) = A.bounds arr
+        w = fst upr - fst lwr
+        h = snd upr - snd lwr
 
 
 saveImage :: Func -> (Int, Int) -> (Double, Double) -> (Double, Double) 
           -> ColorMap -> FilePath -> IO ()
 saveImage func (w, h) (xlwr, xupr) (ylwr, yupr) cmap file = 
     writeImage file
-               myImage (coloringFromFunc func (w, h) (xlwr, xupr) (ylwr, yupr) cmap) (h, w)
+               (myImage func (w, h) (xlwr, xupr) (ylwr, yupr) cmap) 
 
 
-saveImage' :: A.Array (Int, Int) (Complex Double) -> (Int, Int) 
+saveImage' :: A.Array (Int, Int) (Complex Double) 
               -> ColorMap -> FilePath -> IO ()
-saveImage' arr (w, h) cmap file = 
-    writeImage file
-               myImage coloringFromArray arr cmap (h, w)
+saveImage' arr cmap file = 
+    writeImage file (myImage' arr cmap) 
