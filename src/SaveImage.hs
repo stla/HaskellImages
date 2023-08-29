@@ -2,7 +2,8 @@ module SaveImage
     ( saveImage
     , saveImage'
     , myImage
-    , Func )
+    , Func
+    , ColorMap )
    where
 import Data.Complex ( Complex(..) )
 import Graphics.Image
