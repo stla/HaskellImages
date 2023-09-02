@@ -76,6 +76,13 @@ You'll get this image:
 
 ![](images/Cayley_cm1.png)
 
+You can also get the image in Haskell and play with it, e.g. by applying filters. 
+Use the `myImage` function of this package to get the image:
+
+```haskell
+myimage = myImage func (512, 512) (-1, 1) (-1, 1) colorMap1
+```
+
 This example is not very exciting. If you want a funny one, you can try:
 
 ```haskell
@@ -93,7 +100,6 @@ save :: Func -> IO ()
 save func = 
     saveImage func (512, 512) (-5, 5) (-5, 5) colorMap4 "func.png"
 ```
-
 
 ___
 

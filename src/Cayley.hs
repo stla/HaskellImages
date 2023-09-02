@@ -18,7 +18,7 @@ f z = 1728 * (z * (z**10 + 11 * z**5 - 1))**5 /
     (-(z**20 + 1) + 228 * (z**15 - z**5) - 494 * z**10)**3
 
 g :: Func
-g z = Just $ f $ f z
+g z = Just $ f z
 
 savef :: ColorMap -> IO ()
 savef cmap = saveImage g (512, 512) (-5, 5) (-5, 5) cmap "images/aaa.png"
@@ -30,6 +30,18 @@ save cmap =
 img :: Image VU RGB Double
 img = myImage g (512, 512) (-5, 5) (-5, 5) colorMap4
 
-imgX = convolve Edge (fromLists [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]) img
-imgY = convolve Edge (fromLists [[-1,-2,-1], [ 0, 0, 0], [ 1, 2, 1]]) img
-imgXY = normalize $ sqrt (imgX ^ 2 + imgY ^ 2)
+sobel :: Image VU RGB Double -> Image VU RGB Double
+sobel img = 
+    let imgX = convolve Edge (fromLists [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]) img
+        imgY = convolve Edge (fromLists [[-1,-2,-1], [ 0, 0, 0], [ 1, 2, 1]]) img
+    in 
+        normalize $ sqrt (imgX ^ 2 + imgY ^ 2)
+
+
+
+myfilter = laplacianFilter Edge  
+fimg = applyFilter myfilter img
+
+fad = do 
+    ad <- readImageRGB VU "images/Klein_Fibonacci_cm4_1024px.png"
+    return $ applyFilter myfilter ad
