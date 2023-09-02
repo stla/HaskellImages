@@ -29,6 +29,7 @@ library
                      , SaveImage
                      , ColorMaps
                      , Cayley
+                     , WriteRGB
   build-depends:       base >= 4.7 && < 5
                      , hip
                      , weierstrass-functions >= 0.1.3.0
