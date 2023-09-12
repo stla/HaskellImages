@@ -44,5 +44,4 @@ myfilter = logFilter Edge
 fimg = applyFilter myfilter img
 
 fad = do 
-    ad <- readImageRGB VU "images/Klein_Fibonacci_cm4_1024px.png"
-    return $ applyFilter myfilter ad
+    readImageRGB VU "images/KleinFibonacci_cm3.png"-- "images/Klein_Fibonacci_cm4_1024px.png"
