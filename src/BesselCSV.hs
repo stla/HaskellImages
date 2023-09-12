@@ -9,7 +9,8 @@ import Data.Complex ( Complex((:+)) )
 import Data.Csv ( (.!), FromRecord(..), decode, HasHeader(..), ToRecord(..), toField, record )
 import qualified Data.Array as A ( Array, array )
 import Data.Either.Extra ( fromRight' )
-import ColorFun (saveImage', saveImage2', saveImage3', saveImage4')
+import SaveImage (saveImage')
+import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4)
 
 data Cplx = Cplx { re :: !Double, im :: !Double }
 
@@ -42,25 +43,25 @@ save1 = do
     eithervcplx <- besselColumns
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
-    saveImage' arr (512, 512) "Bessel_cm1.png"
+    saveImage' arr colorMap1 "Bessel_cm1.png"
 
 save2 :: IO ()
 save2 = do
     eithervcplx <- besselColumns
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
-    saveImage2' arr (512, 512) "Bessel_cm2.png"
+    saveImage' arr colorMap2 "Bessel_cm2.png"
 
 save3 :: IO ()
 save3 = do
     eithervcplx <- besselColumns
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
-    saveImage3' arr 0.8 20 (512, 512) "Bessel_cm3.png"
+    saveImage' arr (colorMap3 0.8 20) "Bessel_cm3.png"
 
 save4 :: IO ()
 save4 = do
     eithervcplx <- besselColumns
     let vcplx = fromRight' eithervcplx
         arr = besselArray vcplx
-    saveImage4' arr (512, 512) "Bessel_cm4.png"
+    saveImage' arr colorMap4 "Bessel_cm4.png"

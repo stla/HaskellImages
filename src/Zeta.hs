@@ -2,7 +2,8 @@ module Zeta
     (save1, save2, save3, save4) 
     where
 import Data.Complex ( Complex(..) )
-import ColorFun (saveImage, saveImage2, saveImage3, saveImage4)
+import SaveImage (saveImage)
+import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4)
 import Math.Weierstrass (weierstrassZeta, ellipticInvariants)
 
 xlimitLwr, xlimitUpr :: Double
@@ -30,13 +31,17 @@ complexMap :: Complex Double -> Maybe (Complex Double)
 complexMap z = Just $ weierstrassZeta z g2 g3
 
 save1 :: IO ()
-save1 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Zeta_cm1.png"
+save1 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap1 "Zeta_cm1.png"
 
 save2 :: IO ()
-save2 = saveImage2 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Zeta_cm2.png"
+save2 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap2 "Zeta_cm2.png"
 
 save3 :: Double -> Double -> IO ()
-save3 s n = saveImage3 complexMap s n (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Zeta_cm3.png"
+save3 s n = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+            (colorMap3 s n) "Zeta_cm3.png"
 
 save4 :: IO ()
-save4 = saveImage4 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Zeta_cm4.png"
+save4 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap4 "Zeta_cm4.png"

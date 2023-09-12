@@ -3,9 +3,10 @@
 module Klein
     (save1, save2, save3, save4)
     where
-import ColorFun (saveImage, saveImage2, saveImage3, saveImage4)
+import SaveImage (saveImage)
 import Data.Complex ( Complex(..), magnitude, imagPart )
 import Math.Eisenstein (kleinJ)
+import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4)
 
 
 xlimitLwr, xlimitUpr :: Double
@@ -39,13 +40,17 @@ kleinMapInv z = maybe k (fmap (1 /)) (Just k)
 
 
 save1 :: IO ()
-save1 = saveImage kleinMapInv (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Klein_cm1.png"
+save1 = saveImage kleinMapInv (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap1 "Klein_cm1.png"
 
 save2 :: IO ()
-save2 = saveImage2 kleinMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Klein_cm2.png"
+save2 = saveImage kleinMapInv (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap2 "Klein_cm2.png"
 
 save3 :: Double -> Double -> IO ()
-save3 s n = saveImage3 kleinMap s n (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Klein_cm3.png"
+save3 s n = saveImage kleinMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+            (colorMap3 s n) "Klein_cm3.png"
 
 save4 :: IO ()
-save4 = saveImage4 kleinMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Klein_cm4.png"
+save4 = saveImage kleinMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap4 "Klein_cm4.png"
