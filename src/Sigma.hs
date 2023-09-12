@@ -2,8 +2,9 @@ module Sigma
     (save1, save2, save3, save4) 
     where
 import Data.Complex ( Complex(..) )
-import ColorFun (saveImage, saveImage2, saveImage3, saveImage4)
+import SaveImage (saveImage)
 import Math.Weierstrass (weierstrassSigma, ellipticInvariants)
+import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4)
 
 xlimitLwr, xlimitUpr :: Double
 xlimitLwr = -5
@@ -28,13 +29,17 @@ complexMap :: Complex Double -> Maybe (Complex Double)
 complexMap z = Just $ weierstrassSigma z g2 g3
 
 save1 :: IO ()
-save1 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm1.png"
+save1 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap1 "Sigma_cm1.png"
 
 save2 :: IO ()
-save2 = saveImage2 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm2.png"
+save2 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap2 "Sigma_cm2.png"
 
 save3 :: Double -> Double -> IO ()
-save3 s n = saveImage3 complexMap s n (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm3.png"
+save3 s n = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+            (colorMap3 s n) "Sigma_cm3.png"
 
 save4 :: IO ()
-save4 = saveImage4 complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) "Sigma_cm4.png"
+save4 = saveImage complexMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+        colorMap4 "Sigma_cm4.png"
