@@ -44,7 +44,7 @@ save1 = saveImage kleinMapInv (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr,
         colorMap1 "Klein_cm1.png"
 
 save2 :: IO ()
-save2 = saveImage kleinMapInv (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
+save2 = saveImage kleinMap (width, height) (xlimitLwr, xlimitUpr) (ylimitLwr, ylimitUpr) 
         colorMap2 "Klein_cm2.png"
 
 save3 :: Double -> Double -> IO ()
