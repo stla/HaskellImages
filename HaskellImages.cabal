@@ -35,6 +35,7 @@ library
                      , vector
                      , extra
                      , colour
+                     , hsluv-haskell
                      , array
                      , cassava
                      , bytestring

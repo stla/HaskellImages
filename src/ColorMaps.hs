@@ -1,15 +1,18 @@
 module ColorMaps
-    ( colorMap1, colorMap2, colorMap3, colorMap4 )
+    ( colorMap1, colorMap2, colorMap3, colorMap4, colorMap5 )
     where
 import Data.Complex ( Complex(..), realPart, imagPart, magnitude, phase )
 -- import Graphics.Image.Interface ()
 import Graphics.Image
-    ( RGB, Pixel(PixelRGB), Pixel(PixelHSI), toPixelRGB )
+    ( RGB (..), Pixel(PixelRGB), Pixel(PixelHSI), toPixelRGB )
 import Data.Colour.RGBSpace ( channelRed, channelGreen, channelBlue )
 import Data.Colour.RGBSpace.HSL ( hsl )
 import Data.Colour.RGBSpace.HSV ( hsv )
 import GHC.Float ( log1p )
 import Data.Maybe ( isNothing, fromJust )
+import qualified HSLuv as H 
+    (HSLuv(..), hsluvToRgb, RGBRed (..), RGBGreen (..), RGBBlue (..), RGB(..), HSLuvSaturation (HSLuvSaturation), HSLuvLightness (HSLuvLightness), HSLuvHue (HSLuvHue)) 
+
 
 colorMap1 :: Maybe (Complex Double) -> Pixel RGB Double
 colorMap1 z0 =
@@ -97,3 +100,23 @@ colorMap4 z0 =
                 | r == 0 = 0
                 | isInfinite r = 1
                 | otherwise = atan (log r) / pi + 0.5
+
+
+colorMap5 :: Maybe (Complex Double) -> Pixel RGB Double
+colorMap5 z0 =
+    if isNothing z0
+        then PixelRGB 1 1 1
+        else
+        let z = fromJust z0
+            a = phase z
+            arg = if a < 0 then a + pi else a
+            h = H.HSLuvHue $ 360.0 * min (arg/2/pi) 1
+            w = 2 * pi * log1p (abs arg)
+            s = H.HSLuvSaturation $ 100.0 * sqrt (( 1.0 + sin w ) / 2.0)
+            l = H.HSLuvLightness $ 100.0 * ( 1.0 + cos w ) / 2.0
+            H.RGB r g b = H.hsluvToRgb (H.HSLuv h s l)
+            H.RGBRed r' = r
+            H.RGBGreen g' = g
+            H.RGBBlue b' = b
+        in
+            PixelRGB r' g' b'

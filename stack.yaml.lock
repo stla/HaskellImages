@@ -53,6 +53,13 @@ packages:
       size: 851
   original:
     hackage: numeric-tools-0.2.0.1
+- completed:
+    hackage: hsluv-haskell-0.1.0.0@sha256:b702020bbaf0a17467ac3416542e0bbc91587378340db9119ed4f9193e8cb1dd,1242
+    pantry-tree:
+      sha256: 8b5e1a1894832d09c1a1f1c72a6af0e3d43ee629fbf886fe17add1f9f1da070b
+      size: 474
+  original:
+    hackage: hsluv-haskell-0.1.0.0
 snapshots:
 - completed:
     sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2

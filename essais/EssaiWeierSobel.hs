@@ -1,7 +1,7 @@
 import Data.Complex ( Complex(..) )
 import SaveImage (saveImage, myImage)
 import Math.Weierstrass (weierstrassP, ellipticInvariants)
-import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4)
+import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4, colorMap5)
 import Graphics.Image hiding (magnitude)
 
 g2g3 :: (Complex Double, Complex Double)
@@ -25,3 +25,7 @@ myfilteredImage = sobelOperator myimage
 
 saveMyFilteredImage :: IO ()
 saveMyFilteredImage = writeImage "images/wp_sobel.png" myfilteredImage
+
+
+myimage2 :: Image VU RGB Double
+myimage2 = myImage wp (512, 512) (-1, 1) (-1, 1) colorMap5
