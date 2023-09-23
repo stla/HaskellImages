@@ -3,6 +3,7 @@ import SaveImage (saveImage, myImage)
 import Math.Weierstrass (weierstrassP, ellipticInvariants)
 import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4, colorMap5)
 import Graphics.Image hiding (magnitude)
+import WriteRGB (writeToFileRGB)
 
 g2g3 :: (Complex Double, Complex Double)
 g2g3 = ellipticInvariants (0.5 :+ 0.0) (0.0 :+ 0.5)

@@ -12,3 +12,5 @@ extra-deps:
  - converge-0.1.0.1
  - numeric-tools-0.2.0.1
  - hsluv-haskell-0.1.0.0
+ - BesselJ-0.2.0.0
+ - numerical-integration-0.1.2.3

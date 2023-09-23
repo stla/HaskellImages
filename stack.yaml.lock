@@ -60,6 +60,20 @@ packages:
       size: 474
   original:
     hackage: hsluv-haskell-0.1.0.0
+- completed:
+    hackage: BesselJ-0.2.0.0@sha256:743c77661c9106c522639e99611915913d53ed857dfc658a6448596de6969e20,2233
+    pantry-tree:
+      sha256: 01965478d750700a3bdacecbb1afd374b0ca935d804b1d180056529baedea667
+      size: 601
+  original:
+    hackage: BesselJ-0.2.0.0
+- completed:
+    hackage: numerical-integration-0.1.2.3@sha256:cf03eafe4492cddeb69ab8a2d68bc4dc8e3e21a49f7218f959cf1f4681e1fb79,17313
+    pantry-tree:
+      sha256: ee06239903d4d62b709527e7aaa52e296a093d88bb4fe9a1a975be0b08b522cd
+      size: 20104
+  original:
+    hackage: numerical-integration-0.1.2.3
 snapshots:
 - completed:
     sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2
