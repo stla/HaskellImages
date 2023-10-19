@@ -217,3 +217,7 @@ Here are some images obtained with this package.
 ![](images/Bessel_cm3.png)
 
 ![](images/Bessel_cm4.png)
+
+![](images/wp2.png)
+
+![](images/wp2_sobel.png)
