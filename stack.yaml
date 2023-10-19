@@ -4,11 +4,9 @@ packages:
 - .
 
 extra-deps: 
- - git: https://github.com/stla/weierstrass-functions.git
-   commit: 92130c776dcc27b479956c34355a55df63b3b50c
+ - weierstrass-functions-0.1.6.0
  - elliptic-integrals-0.1.0.1
- - git: https://github.com/stla/jacobi-theta.git
-   commit: bec442d433a2c7ce39229e6a89232779d32db596
+ - jacobi-theta-0.2.2.0
  - gamma-0.10.0.0
  - continued-fractions-0.10.0.2
  - converge-0.1.0.1

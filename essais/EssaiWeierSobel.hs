@@ -5,15 +5,9 @@ import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4, colorMap5)
 import Graphics.Image hiding (magnitude)
 import WriteRGB (writeToFileRGB)
 
-g2g3 :: (Complex Double, Complex Double)
-g2g3 = ellipticInvariants (0.5 :+ 0.0) (0.0 :+ 0.5)
-
-g2, g3 :: Complex Double
-g2 = fst g2g3
-g3 = snd g2g3
 
 wp :: Complex Double -> Maybe (Complex Double)
-wp z = Just $ weierstrassP z g2 g3
+wp z = Just $ weierstrassP z (0.5 :+ 0.0) (0.0 :+ 0.5)
 
 myimage :: Image VU RGB Double
 myimage = myImage wp (512, 512) (-1, 1) (-1, 1) colorMap1

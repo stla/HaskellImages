@@ -5,15 +5,15 @@
 
 packages:
 - completed:
-    commit: 92130c776dcc27b479956c34355a55df63b3b50c
+    commit: b75a340a1d77cd2443f055b351df652550c71145
     git: https://github.com/stla/weierstrass-functions.git
     name: weierstrass-functions
     pantry-tree:
-      sha256: 216e542b955380a3e5c0b2d1476fdea75bb1c906f4856013795ec17f46c1cb2a
+      sha256: b43f6f8654ed79b4a29527b8fde69ff74e82b3e338b6010ed3a967fb0cd26ea9
       size: 1031
     version: 0.1.6.0
   original:
-    commit: 92130c776dcc27b479956c34355a55df63b3b50c
+    commit: b75a340a1d77cd2443f055b351df652550c71145
     git: https://github.com/stla/weierstrass-functions.git
 - completed:
     hackage: elliptic-integrals-0.1.0.1@sha256:596f67b9e7be8882308a398c7a6a6e6cf3d196839db4a1e21667392f09f714f1,1484
@@ -23,16 +23,12 @@ packages:
   original:
     hackage: elliptic-integrals-0.1.0.1
 - completed:
-    commit: bec442d433a2c7ce39229e6a89232779d32db596
-    git: https://github.com/stla/jacobi-theta.git
-    name: jacobi-theta
+    hackage: jacobi-theta-0.2.2.0@sha256:a5e1f55e725099a4fa3693c5c09b2cf9d6a07285badb2e69e58ba5d360814f43,1577
     pantry-tree:
-      sha256: e46e4f146390f11c45aefb0b815e0c4b2b94067e684115ecf27e39abaec6a9b0
-      size: 772
-    version: 0.2.2.0
+      sha256: 428246926304e95351f64ca3e2764192064e8a660603ea5d7c888f384c701e7e
+      size: 429
   original:
-    commit: bec442d433a2c7ce39229e6a89232779d32db596
-    git: https://github.com/stla/jacobi-theta.git
+    hackage: jacobi-theta-0.2.2.0
 - completed:
     hackage: gamma-0.10.0.0@sha256:0d666fc486899a2e22f44aec1aa32c168e0803e6c2ddb266a18a07700ca5d95b,2051
     pantry-tree:
