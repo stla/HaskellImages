@@ -1,6 +1,6 @@
 import Data.Complex ( Complex(..) )
 import SaveImage (saveImage, myImage)
-import Math.Weierstrass (weierstrassP, ellipticInvariants)
+import Math.Weierstrass (weierstrassP)
 import ColorMaps (colorMap1, colorMap2, colorMap3, colorMap4, colorMap5)
 import Graphics.Image hiding (magnitude)
 

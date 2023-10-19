@@ -30,6 +30,7 @@ library
                      , WriteRGB
   build-depends:       base >= 4.7 && < 5
                      , hip
+                     , jacobi-theta >= 0.2.2.0
                      , weierstrass-functions >= 0.1.6.0
                      , numeric-tools
                      , vector

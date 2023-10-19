@@ -213,3 +213,5 @@ Here are some images obtained with this package.
 ![](images/wp2.png)
 
 ![](images/wp2_sobel.png)
+
+![](images/RogRam.png)
