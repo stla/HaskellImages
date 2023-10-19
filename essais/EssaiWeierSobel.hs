@@ -21,6 +21,11 @@ myfilteredImage = sobelOperator myimage
 saveMyFilteredImage :: IO ()
 saveMyFilteredImage = writeImage "images/wp_sobel.png" myfilteredImage
 
+lapimg :: Image VU RGB Double
+lapimg = applyFilter (laplacianFilter Edge) myimage
+
+saveMyFilteredImage2 :: IO ()
+saveMyFilteredImage2 = writeImage "images/wp_Laplacian.png" lapimg
 
 myimage2 :: Image VU RGB Double
 myimage2 = myImage wp (512, 512) (-1, 1) (-1, 1) colorMap5

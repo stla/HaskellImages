@@ -106,21 +106,13 @@ Let's see an example, with the Weierstrass p-function.
 ```haskell
 import Data.Complex ( Complex(..) )
 import SaveImage (myImage)
-import Math.Weierstrass (weierstrassP, ellipticInvariants)
+import Math.Weierstrass (weierstrassP)
 import ColorMaps (colorMap1)
 import Graphics.Image hiding (magnitude)
 
--- compute the elliptic invariantes from the half-periods
-g2g3 :: (Complex Double, Complex Double)
-g2g3 = ellipticInvariants (0.5 :+ 0.0) (0.0 :+ 0.5)
-
-g2, g3 :: Complex Double
-g2 = fst g2g3
-g3 = snd g2g3
-
 -- the 'Func'
 wp :: Complex Double -> Maybe (Complex Double)
-wp z = Just $ weierstrassP z g2 g3
+wp z = Just $ weierstrassP z (0.5 :+ 0.0) (0.0 :+ 0.5)
 
 -- make image
 myimage :: Image VU RGB Double
